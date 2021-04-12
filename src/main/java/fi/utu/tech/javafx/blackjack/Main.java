@@ -1,4 +1,4 @@
-package blackjack;
+package fi.utu.tech.javafx.blackjack;
 
 import javafx.application.Application;
 import javafx.geometry.Pos;

@@ -1,4 +1,4 @@
-package blackjack;
+package fi.utu.tech.javafx.blackjack;
 
 import java.util.ArrayList;
 import java.util.Collections;
