@@ -1,5 +1,9 @@
 package fi.utu.tech.javafx.blackjack;
 
+import javafx.scene.image.Image;
+
+import javafx.scene.image.ImageView;
+
 public class Card {
     public Rank rank;
     public Suit suit;
@@ -15,5 +19,13 @@ public class Card {
 
     public Suit getSuit() {
         return this.suit;
+    }
+
+    // Returns an ImageView-node corresponding to the given card
+    public ImageView getCardImage() {
+        String imagePath = "images/" + this.rank.toString() + "_" + this.suit.toString() + ".png";
+        Image cardImage = new Image(getClass().getResource(imagePath).toExternalForm(), 130, 200, true, false);
+
+        return new ImageView(cardImage);
     }
 }

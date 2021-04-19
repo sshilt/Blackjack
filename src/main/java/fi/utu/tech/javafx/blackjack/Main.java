@@ -19,21 +19,26 @@ public class Main extends Application {
         vbox.setAlignment(Pos.CENTER);
         Label label = new Label("Set starting balance (1-100,000)");
         TextField field = new TextField("100");
-        BorderPane bp = new BorderPane();
+
         field.setMaxWidth(100);
         Button button = new Button("Confirm");
 
-        button.setOnAction(actionEvent -> {
-            int money = Integer.parseInt(field.getText());
-            primaryStage.getScene().setRoot(new GameView(money).getGameView());
-        });
+
         vbox.getChildren().addAll(label, field, button);
 
         BorderPane root = new BorderPane();
         root.setCenter(vbox);
-        final Menu menu1 = new Menu("File");
+
+        Menu menu1 = new Menu("File");
         MenuBar menuBar = new MenuBar();
         menuBar.getMenus().add(menu1);
+
+        root.setTop(menuBar);
+
+        button.setOnAction(actionEvent -> {
+            int money = Integer.parseInt(field.getText());
+            new GameView(money, root).showGameView();
+        });
 
         primaryStage.setScene(new Scene(root, 1280, 720));
         primaryStage.show();
