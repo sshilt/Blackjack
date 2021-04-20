@@ -4,25 +4,22 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 
 public class GameView extends StackPane {
-    BorderPane pane;
-    BorderPane root;
-    private int money;
-    private int dealerScore;
-    private int playerScore;
-    private HBox dealerCards;
-    private HBox playerCards;
-    private Deck deck;
+    private GameState gameState;
+    private BorderPane pane;
+    private BorderPane root;
 
-    public GameView(int money, BorderPane root) {
-        this.money = money;
+    public GameView(BorderPane root, int money) {
         this.root = root;
+        this.gameState = new GameState(money);
     }
 
     public void showGameView() {
@@ -33,36 +30,94 @@ public class GameView extends StackPane {
         Label dealerText = new Label("Dealer");
         dealerText.setFont(new Font(15));
 
-        Label dealerScoreLabel = new Label(String.valueOf(dealerScore));
+        String dealerScoreText;
+        if (gameState.getDealerScore()[0] == gameState.getDealerScore()[1]) {
+            dealerScoreText = String.valueOf(gameState.getDealerScore()[0]);
+        }
+        else {
+            dealerScoreText = gameState.getDealerScore()[0] + " / " + gameState.getDealerScore()[1];
+        }
+        Label dealerScoreLabel = new Label(dealerScoreText);
 
-        HBox dealerCards = new HBox(10);
-        dealerCards.setPadding(new Insets(0, 0, 100 ,0));
-        dealerCards.setAlignment(Pos.CENTER);
+        HBox dealerCardsBox = new HBox(10);
+        dealerCardsBox.setMinHeight(290);
+        dealerCardsBox.setPadding(new Insets(0, 0, 100, 0));
+        dealerCardsBox.setAlignment(Pos.CENTER);
 
-        Deck deck = new Deck();
-        deck.shuffleDeck();
-
-        for (int i = 0; i < 2; i++) {
-            dealerCards.getChildren().add(deck.getDeck().get(i).getCardImage());
+        for (Card c : gameState.getDealerCards()) {
+            dealerCardsBox.getChildren().add(c.getCardImage());
         }
 
-        Label playerScoreLabel = new Label(String.valueOf(playerScore));
-
-        HBox playerCards = new HBox(10);
-        playerCards.setAlignment(Pos.CENTER);
-
-        for (int i = 2; i < 4; i++) {
-            playerCards.getChildren().add(deck.getDeck().get(i).getCardImage());
+        String playerScoreText;
+        if (gameState.getPlayerScore()[0] == gameState.getPlayerScore()[1]) {
+            playerScoreText = String.valueOf(gameState.getPlayerScore()[0]);
         }
-        Button button = new Button("Click me");
+        else {
+            playerScoreText = gameState.getPlayerScore()[0] + " / " + gameState.getPlayerScore()[1];
+        }
+        Label playerScoreLabel = new Label(playerScoreText);
 
-        button.setOnAction(actionEvent -> {
-            pane.getChildren().remove(playerScoreLabel);
+        HBox playerCardsBox = new HBox(10);
+        playerCardsBox.setMinHeight(190);
+        playerCardsBox.setAlignment(Pos.CENTER);
+
+        for (Card c : gameState.getPlayerCards()) {
+            playerCardsBox.getChildren().add(c.getCardImage());
+        }
+
+        HBox buttonsBox = new HBox(10);
+        buttonsBox.setAlignment(Pos.CENTER);
+
+        Button standButton = new Button("Stand");
+
+        standButton.setOnAction(actionEvent -> {
+            while (((gameState.getDealerScore()[0] < 18) && (gameState.getDealerScore()[1] > 21)) ||
+                    ((gameState.getDealerScore()[0] < 17) && (gameState.getDealerScore()[1] < 17))) {
+                gameState.dealCard(true);
+            }
+            int result = gameState.calculateResult();
+
             showGameView();
             root.setCenter(pane);
         });
 
-        vbox.getChildren().addAll(dealerText, dealerScoreLabel, dealerCards, playerScoreLabel, playerCards, button);
+        Button hitButton = new Button("Hit");
+
+        hitButton.setOnAction(actionEvent -> {
+            gameState.dealCard(false);
+            showGameView();
+            root.setCenter(pane);
+        });
+
+        Button doubleButton = new Button("Double");
+
+        doubleButton.setOnAction(actionEvent -> {
+            gameState = new GameState(gameState.getMoney());
+            showGameView();
+            root.setCenter(pane);
+        });
+
+        HBox bettingBox = new HBox(10);
+        bettingBox.setAlignment(Pos.BASELINE_CENTER);
+
+        TextField betAmountField = new TextField();
+        betAmountField.setMaxWidth(100);
+
+        Button betButton = new Button("Confirm");
+
+        betButton.setOnAction(actionEvent -> {
+            gameState.addMoney(-(Integer.parseInt(betAmountField.getText())));
+            gameState.dealCard(true);
+            gameState.dealCard(false);
+            gameState.dealCard(false);
+            showGameView();
+            root.setCenter(pane);
+        });
+        Label moneyLabel = new Label("Total money: " + gameState.getMoney());
+        bettingBox.getChildren().addAll(betAmountField, betButton, moneyLabel);
+
+        buttonsBox.getChildren().addAll(standButton, hitButton, doubleButton);
+        vbox.getChildren().addAll(dealerText, dealerScoreLabel, dealerCardsBox, playerScoreLabel, playerCardsBox, buttonsBox, bettingBox);
         vbox.setAlignment(Pos.TOP_CENTER);
         pane.setCenter(vbox);
         root.setCenter(pane);

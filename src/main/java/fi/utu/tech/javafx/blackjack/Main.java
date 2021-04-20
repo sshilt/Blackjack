@@ -37,7 +37,7 @@ public class Main extends Application {
 
         button.setOnAction(actionEvent -> {
             int money = Integer.parseInt(field.getText());
-            new GameView(money, root).showGameView();
+            new GameView(root, money).showGameView();
         });
 
         primaryStage.setScene(new Scene(root, 1280, 720));
