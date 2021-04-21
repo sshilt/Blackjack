@@ -20,29 +20,28 @@ public class Main extends Application {
         Label label = new Label("Set starting balance (1-100,000)");
         TextField field = new TextField("100");
 
-        field.setMaxWidth(100);
+        field.setMaxWidth(75);
+        field.setAlignment(Pos.CENTER);
         Button button = new Button("Confirm");
-
 
         vbox.getChildren().addAll(label, field, button);
 
         BorderPane root = new BorderPane();
         root.setCenter(vbox);
 
-        Menu menu1 = new Menu("File");
+        Menu menu1 = new Menu("Menu");
         MenuBar menuBar = new MenuBar();
         menuBar.getMenus().add(menu1);
 
         root.setTop(menuBar);
 
         button.setOnAction(actionEvent -> {
-            int money = Integer.parseInt(field.getText());
+            double money = Integer.parseInt(field.getText());
             new GameView(root, money).showGameView();
         });
 
         primaryStage.setScene(new Scene(root, 1280, 720));
         primaryStage.show();
     }
-
 }
 
