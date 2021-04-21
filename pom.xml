@@ -9,7 +9,7 @@
     <!-- ==== START OF SIMPLE CONFIGURATION ==== -->
 
     <!-- The three parts of the artifact name -->
-    <groupId>fi.utu.tech.javafx</groupId>
+    <groupId>fi.utu.tech</groupId>
     <artifactId>blackjack</artifactId>
     <version>1.0</version>
 
