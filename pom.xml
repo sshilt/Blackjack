@@ -8,7 +8,7 @@
 
     <!-- The three parts of the artifact name -->
     <groupId>fi.utu.tech</groupId>
-    <artifactId>harjoitustyo-d</artifactId>
+    <artifactId>blackjack</artifactId>
     <version>1.0</version>
 
     <!-- We want to generate a jar. Don't change. -->
@@ -16,7 +16,7 @@
 
     <properties>
         <!-- Configures the main class for this project (i.e. what to launch) -->
-        <project.mainclass>fi.utu.tech.javafx.laivanupotus.Main</project.mainclass>
+        <project.mainclass>fi.utu.tech.javafx.blackjack.Main</project.mainclass>
 
         <!-- The source encoding should always be utf-8. Don't change. -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -83,43 +83,6 @@
             <artifactId>jqwik</artifactId>
             <version>${jqwik.version}</version>
             <scope>test</scope>
-        </dependency>
-
-        <!-- JavaFX (remove if not needed to speed up dep downloads)-->
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-base</artifactId>
-            <version>${javafx.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-controls</artifactId>
-            <version>${javafx.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-fxml</artifactId>
-            <version>${javafx.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-graphics</artifactId>
-            <version>${javafx.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-media</artifactId>
-            <version>${javafx.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-swing</artifactId>
-            <version>${javafx.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-web</artifactId>
-            <version>${javafx.version}</version>
         </dependency>
     </dependencies>
 
