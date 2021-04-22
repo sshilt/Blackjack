@@ -36,8 +36,12 @@ public class Main extends Application {
         root.setTop(menuBar);
 
         button.setOnAction(actionEvent -> {
-            double money = Integer.parseInt(field.getText());
-            new GameView(root, money).showGameView();
+            if (field.getText().matches("[0-9]+")) {
+                if (1 <= Integer.parseInt(field.getText()) && Integer.parseInt(field.getText()) <= 100000) {
+                    double money = Integer.parseInt(field.getText());
+                    new GameView(root, money).showGameView();
+                }
+            }
         });
 
         primaryStage.setScene(new Scene(root, 1280, 720));

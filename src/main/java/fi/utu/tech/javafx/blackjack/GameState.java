@@ -1,11 +1,10 @@
 package fi.utu.tech.javafx.blackjack;
 
-
 import java.util.ArrayList;
 
 public class GameState {
     private double money;
-    private int betAmount = 1;
+    private int betAmount;
     private boolean isBettingRound;
     private boolean isDoubleHidden;
     private String resultText;

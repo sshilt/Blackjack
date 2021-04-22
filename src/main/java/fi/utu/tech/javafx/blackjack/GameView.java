@@ -88,17 +88,14 @@ public class GameView extends StackPane {
             if (result == 2) {
                 gameState.setIsBettingRound(true);
                 gameState.setResultText("Push. Your bet has been refunded.");
-                showGameView();
             }
             else if (result == 3) {
                 gameState.setIsBettingRound(true);
                 gameState.setResultText("You win " + (2 * gameState.getBetAmount()) + "!");
-                showGameView();
             }
             else if (result == 4) {
                 gameState.setIsBettingRound(true);
                 gameState.setResultText("Dealer wins. Better luck next time!");
-                showGameView();
             }
             showGameView();
         });
