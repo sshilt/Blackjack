@@ -13,7 +13,6 @@ import javafx.scene.text.Font;
 
 public class GameView extends StackPane {
     private GameState gameState;
-    private BorderPane pane;
     private BorderPane root;
 
     public GameView(BorderPane root, double money) {
@@ -22,7 +21,7 @@ public class GameView extends StackPane {
     }
 
     public void showGameView() {
-        pane = new BorderPane();
+        BorderPane pane = new BorderPane();
         pane.setStyle("-fx-background-color: mintcream");
 
         VBox vbox = new VBox(5);
@@ -78,8 +77,8 @@ public class GameView extends StackPane {
 
         Button standButton = new Button("Stand");
         standButton.setPrefWidth(70);
-
         standButton.setOnAction(actionEvent -> {
+            // Deal cards to dealer until he gets a soft 18+ score or a hard 17+ score (dealer hits on soft 17)
             while (((gameState.getDealerScore()[0] < 18) && (gameState.getDealerScore()[1] > 21)) ||
                     ((gameState.getDealerScore()[0] < 17) && (gameState.getDealerScore()[1] < 17))) {
                 gameState.dealCard(true);
@@ -102,14 +101,12 @@ public class GameView extends StackPane {
 
         Button hitButton = new Button("Hit");
         hitButton.setPrefWidth(70);
-
         hitButton.setOnAction(actionEvent -> {
             gameState.setIsDoubleHidden(true);
             gameState.dealCard(false);
             if (gameState.getPlayerScore()[0] > 21 && gameState.getPlayerScore()[1] > 21) {
                 gameState.setIsBettingRound(true);
                 gameState.setResultText("You bust. Better luck next time!");
-                showGameView();
             }
             // Automatically trigger standButton event if player reaches a score of 21
             else if (gameState.getPlayerScore()[1] == 21) {
@@ -120,12 +117,10 @@ public class GameView extends StackPane {
 
         Button doubleButton = new Button("Double");
         doubleButton.setPrefWidth(70);
-
         // Hides the doubleButton after hitButton has been pushed
         if (gameState.getIsDoubleHidden()) {
             doubleButton.setDisable(true);
         }
-
         // Doubles bet amount and deals one more card to player after which fires standButton to calculate result
         doubleButton.setOnAction(actionEvent -> {
             gameState.makeBet(gameState.getBetAmount(), 2);
@@ -156,39 +151,45 @@ public class GameView extends StackPane {
 
         Button betButton = new Button("Confirm bet");
         betButton.setPrefWidth(80);
-
         betButton.setOnAction(actionEvent -> {
-            gameState = new GameState(gameState.getMoney());
-            gameState.makeBet(Integer.parseInt(betAmountField.getText()), 1);
+            if (betAmountField.getText().matches("[0-9]+")) {
+                if (1 <= Integer.parseInt(betAmountField.getText()) && Integer.parseInt(betAmountField.getText()) <= gameState.getMoney()) {
+                    gameState = new GameState(this.gameState.getMoney());
+                    gameState.makeBet(Integer.parseInt(betAmountField.getText()), 1);
 
-            // Deals one card for dealer, 2 for player
-            gameState.dealCard(true);
-            gameState.dealCard(false);
-            gameState.dealCard(false);
+                    // Deals one card for dealer, 2 for player
+                    gameState.dealCard(true);
+                    gameState.dealCard(false);
+                    gameState.dealCard(false);
+                    // Updates the hand score values
+                    gameState.getDealerScore();
+                    gameState.getPlayerScore();
 
-            // Enable game buttons for decision round
-            standButton.setDisable(false);
-            hitButton.setDisable(false);
-            doubleButton.setDisable(false);
-            gameState.setIsBettingRound(false);
-            showGameView();
+                    // Sets decision round on
+                    gameState.setIsBettingRound(false);
 
-            int result = gameState.calculateResult();
-            if (result == 1) {
-                gameState.setIsBettingRound(true);
-                gameState.setResultText("Blackjack! You win " + 2.5 * gameState.getBetAmount() + "!");
-                showGameView();
-            }
-            else if (result == 2) {
-                gameState.setIsBettingRound(true);
-                gameState.setResultText("Push. Your bet has been refunded.");
-                showGameView();
+                    // Checks for blackjack and skips to betting round if player gets blackjack
+                    int result = gameState.calculateResult();
+                    if (result == 1) {
+                        gameState.setIsBettingRound(true);
+                        gameState.setResultText("Blackjack! You win " + 2.5 * gameState.getBetAmount() + "!");
+                    } else if (result == 2) {
+                        gameState.setIsBettingRound(true);
+                        gameState.setResultText("Push. Your bet has been refunded.");
+                    }
+                    showGameView();
+                }
             }
         });
 
+        // Hides betting fields for decision round
         if (!gameState.getIsBettingRound()) {
             betAmountField.setDisable(true);
             betButton.setDisable(true);
+            // Doubling is disabled if player doesn't have enough money
+            if (gameState.getMoney() < gameState.getBetAmount()) {
+                doubleButton.setDisable(true);
+            }
         }
 
         bettingBox.setPadding(new Insets(10,0,10,0));
