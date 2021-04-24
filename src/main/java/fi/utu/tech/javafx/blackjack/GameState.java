@@ -40,12 +40,28 @@ public class GameState {
         return isDoubleHidden;
     }
 
-    public void dealCard(boolean x) {
+    public void dealCard(boolean dealer) {
         Card card = deck.getDeck().get(0);
         deck.getDeck().remove(0);
-        if (x) {
+        if (dealer) {
             dealerCards.add(card);
+            if (card.getRank() == Rank.ACE) {
+                dealerScore[0] += 1;
+                dealerScore[1] += 11;
+            }
+            else {
+                dealerScore[0] += card.getRank().value;
+                dealerScore[1] += card.getRank().value;
+            }
             return;
+        }
+        if (card.getRank() == Rank.ACE) {
+            playerScore[0] += 1;
+            playerScore[1] += 11;
+        }
+        else {
+            playerScore[0] += card.getRank().value;
+            playerScore[1] += card.getRank().value;
         }
         playerCards.add(card);
     }
@@ -57,7 +73,6 @@ public class GameState {
         if (playerCards.size() == 2 && dealerCards.size() == 1) {
             if (playerScore[1] == 21) {
                 dealCard(true); // Deals a card to the dealer
-                this.dealerScore = getDealerScore(); // Updates dealerscore
                 if (dealerScore[1] == 21) {
                     money += betAmount;
                     return 2;
@@ -132,31 +147,9 @@ public class GameState {
     }
 
     public int[] getDealerScore() {
-        dealerScore = new int[]{0,0};
-        for (Card c : dealerCards) {
-            if (c.getRank() == Rank.ACE) {
-                dealerScore[0] += 1;
-                dealerScore[1] += 11;
-            }
-            else {
-                dealerScore[0] += c.getRank().value;
-                dealerScore[1] += c.getRank().value;
-            }
-        }
         return dealerScore;
     }
     public int[] getPlayerScore() {
-        playerScore = new int[]{0,0};
-        for (Card c : playerCards) {
-            if (c.getRank() == Rank.ACE) {
-                playerScore[0] += 1;
-                playerScore[1] += 11;
-            }
-            else {
-                playerScore[0] += c.getRank().value;
-                playerScore[1] += c.getRank().value;
-            }
-        }
         return playerScore;
     }
 }

@@ -161,9 +161,6 @@ public class GameView extends StackPane {
                     gameState.dealCard(true);
                     gameState.dealCard(false);
                     gameState.dealCard(false);
-                    // Updates the hand score values
-                    gameState.getDealerScore();
-                    gameState.getPlayerScore();
 
                     // Sets decision round on
                     gameState.setIsBettingRound(false);
