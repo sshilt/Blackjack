@@ -35,7 +35,7 @@ public class GameState {
     }
 
     /**
-     * Sets is betting round.
+     * Sets betting round state.
      *
      * @param state the state
      */
@@ -44,16 +44,16 @@ public class GameState {
     }
 
     /**
-     * Gets is betting round.
+     * Gets betting round state.
      *
-     * @return the is betting round
+     * @return the is betting round state
      */
     public boolean getIsBettingRound() {
         return isBettingRound;
     }
 
     /**
-     * Sets is double hidden.
+     * Sets double hidden state.
      *
      * @param state the state
      */
@@ -62,9 +62,9 @@ public class GameState {
     }
 
     /**
-     * Gets is double hidden.
+     * Gets double hidden state.
      *
-     * @return the is double hidden
+     * @return the is double hidden -state
      */
     public boolean getIsDoubleHidden() {
         return isDoubleHidden;
