@@ -11,22 +11,35 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 
+/**
+ * The type Game view.
+ */
 public class GameView extends StackPane {
     private GameState gameState;
     private BorderPane root;
+    private BorderPane pane;
 
+    /**
+     * Instantiates a new Game view.
+     *
+     * @param root  the root
+     * @param money the money
+     */
     public GameView(BorderPane root, double money) {
         this.root = root;
         this.gameState = new GameState(money);
+        // Holds the game's visual nodes (score labels, cards etc.)
+        pane = new BorderPane();
+        pane.setStyle("-fx-background-color: mintcream");
     }
 
+    /**
+     * Show game view.
+     */
     public void showGameView() {
-        BorderPane pane = new BorderPane();
-        pane.setStyle("-fx-background-color: mintcream");
-
         VBox vbox = new VBox(5);
-        Label dealerText = new Label("Dealer");
-        dealerText.setFont(new Font(15));
+        Label dealerLabel = new Label("Dealer");
+        dealerLabel.setFont(new Font(15));
 
         // Sets label text according to current score. If the hand contains an ace, displays two possible values
         // if both are lower than 22
@@ -196,7 +209,7 @@ public class GameView extends StackPane {
         moneyLabel.setFont(new Font(15));
         moneyLabel.setAlignment(Pos.CENTER);
 
-        vbox.getChildren().addAll(dealerText, dealerScoreLabel, dealerCardsBox, resultLabel, playerScoreLabel, playerCardsBox, totalBetLabel, buttonsBox, bettingBox, moneyLabel);
+        vbox.getChildren().addAll(dealerLabel, dealerScoreLabel, dealerCardsBox, resultLabel, playerScoreLabel, playerCardsBox, totalBetLabel, buttonsBox, bettingBox, moneyLabel);
         vbox.setAlignment(Pos.TOP_CENTER);
         pane.setCenter(vbox);
         root.setCenter(pane);

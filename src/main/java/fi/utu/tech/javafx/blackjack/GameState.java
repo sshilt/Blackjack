@@ -2,6 +2,9 @@ package fi.utu.tech.javafx.blackjack;
 
 import java.util.ArrayList;
 
+/**
+ * The type Game state.
+ */
 public class GameState {
     private double money;
     private int betAmount;
@@ -14,6 +17,11 @@ public class GameState {
     private int[] dealerScore;
     private int[] playerScore;
 
+    /**
+     * Instantiates a new Game state.
+     *
+     * @param money the money
+     */
     public GameState(double money) {
         this.money = money;
         this.isBettingRound = true;
@@ -26,47 +34,81 @@ public class GameState {
         this.playerScore = new int[]{0,0};
     }
 
+    /**
+     * Sets is betting round.
+     *
+     * @param state the state
+     */
     public void setIsBettingRound(boolean state) {
         isBettingRound = state;
     }
+
+    /**
+     * Gets is betting round.
+     *
+     * @return the is betting round
+     */
     public boolean getIsBettingRound() {
         return isBettingRound;
     }
 
+    /**
+     * Sets is double hidden.
+     *
+     * @param state the state
+     */
     public void setIsDoubleHidden(boolean state) {
         isDoubleHidden = state;
     }
+
+    /**
+     * Gets is double hidden.
+     *
+     * @return the is double hidden
+     */
     public boolean getIsDoubleHidden() {
         return isDoubleHidden;
     }
 
+    /**
+     * Deal card.
+     *
+     * @param dealer the dealer
+     */
     public void dealCard(boolean dealer) {
         Card card = deck.getDeck().get(0);
         deck.getDeck().remove(0);
         if (dealer) {
             dealerCards.add(card);
+            // Increase dealer score
             if (card.getRank() == Rank.ACE) {
                 dealerScore[0] += 1;
                 dealerScore[1] += 11;
             }
             else {
-                dealerScore[0] += card.getRank().value;
-                dealerScore[1] += card.getRank().value;
+                dealerScore[0] += card.getRank().getValue();
+                dealerScore[1] += card.getRank().getValue();
             }
             return;
         }
+        playerCards.add(card);
+        // Increase player score
         if (card.getRank() == Rank.ACE) {
             playerScore[0] += 1;
             playerScore[1] += 11;
         }
         else {
-            playerScore[0] += card.getRank().value;
-            playerScore[1] += card.getRank().value;
+            playerScore[0] += card.getRank().getValue();
+            playerScore[1] += card.getRank().getValue();
         }
-        playerCards.add(card);
     }
 
-    // 0: ignore, 1: blackjack, 2: push, 3: player wins, 4: dealer wins
+    /**
+     * Calculate result int.
+     *
+     * @return the int
+     * 0: ignore, 1: blackjack, 2: push, 3: player wins, 4: dealer wins
+     */
     public int calculateResult() {
 
         // Checks if player has a blackjack in starting position. 2.5x paid if dealer doesn't also get a blackjack
@@ -121,34 +163,85 @@ public class GameState {
         return 0;
     }
 
+    /**
+     * Make bet.
+     *
+     * @param amount     the amount
+     * @param multiplier the multiplier
+     */
     public void makeBet(int amount, int multiplier) {
         this.money -= amount;
         this.betAmount = multiplier * amount;
     }
+
+    /**
+     * Gets money.
+     *
+     * @return the money
+     */
     public double getMoney() {
         return money;
     }
+
+    /**
+     * Gets bet amount.
+     *
+     * @return the bet amount
+     */
     public int getBetAmount() {
         return betAmount;
     }
 
+    /**
+     * Sets result text.
+     *
+     * @param s the s
+     */
     public void setResultText(String s) {
         resultText = s;
     }
+
+    /**
+     * Gets result text.
+     *
+     * @return the result text
+     */
     public String getResultText() {
         return resultText;
     }
 
+    /**
+     * Gets dealer cards.
+     *
+     * @return the dealer cards
+     */
     public ArrayList<Card> getDealerCards() {
         return dealerCards;
     }
+
+    /**
+     * Gets player cards.
+     *
+     * @return the player cards
+     */
     public ArrayList<Card> getPlayerCards() {
         return playerCards;
     }
 
+    /**
+     * Get dealer score int [ ].
+     *
+     * @return the int [ ]
+     */
     public int[] getDealerScore() {
         return dealerScore;
     }
+
+    /**
+     * Get player score int [ ].
+     *
+     * @return the int [ ]
+     */
     public int[] getPlayerScore() {
         return playerScore;
     }

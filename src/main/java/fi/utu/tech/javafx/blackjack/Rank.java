@@ -1,5 +1,8 @@
 package fi.utu.tech.javafx.blackjack;
 
+/**
+ * The enum Rank.
+ */
 public enum Rank {
     TWO(2),
     THREE(3),
@@ -15,13 +18,18 @@ public enum Rank {
     KING(10),
     ACE(11);
 
-    public final int value;
+    private final int value;
 
     Rank(int value) {
         this.value = value;
     }
 
-    public int getRank() {
-        return this.value;
+    /**
+     * Gets value.
+     *
+     * @return the value
+     */
+    public int getValue() {
+        return value;
     }
 }
