@@ -77,7 +77,7 @@ public class GameView extends StackPane {
         HBox playerCardsBox = new HBox(10);
         playerCardsBox.setMinHeight(190);
         playerCardsBox.setAlignment(Pos.CENTER);
-
+        //
         for (Card c : gameState.getPlayerCards()) {
             playerCardsBox.getChildren().add(c.getCardImage());
         }
@@ -112,6 +112,7 @@ public class GameView extends StackPane {
             showGameView();
         });
 
+        // Deals the player one more card
         Button hitButton = new Button("Hit");
         hitButton.setPrefWidth(70);
         hitButton.setOnAction(actionEvent -> {
@@ -134,7 +135,7 @@ public class GameView extends StackPane {
         if (gameState.getIsDoubleHidden()) {
             doubleButton.setDisable(true);
         }
-        // Doubles bet amount and deals one more card to player after which fires standButton to calculate result
+        // Doubles the bet amount and deals one more card to player after which fires standButton to calculate result
         doubleButton.setOnAction(actionEvent -> {
             gameState.makeBet(gameState.getBetAmount(), 2);
             gameState.dealCard(false);
@@ -148,6 +149,7 @@ public class GameView extends StackPane {
             }
         });
 
+        // Hides the decision round buttons for betting round
         if (gameState.getIsBettingRound()) {
             standButton.setDisable(true);
             hitButton.setDisable(true);
@@ -162,6 +164,7 @@ public class GameView extends StackPane {
         betAmountField.setPrefWidth(80);
         betAmountField.setAlignment(Pos.CENTER);
 
+        // Accepts the bet if input is valid and starts the decision round
         Button betButton = new Button("Confirm bet");
         betButton.setPrefWidth(80);
         betButton.setOnAction(actionEvent -> {
