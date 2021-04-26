@@ -54,6 +54,7 @@ public class Main extends Application {
                     "Beat the dealer's score while not going over 21.\n" +
                     "Blackjack consists of 2 cards equaling a 21 score.\n" +
                     "Blackjack is worth more than other 21 score hands.\n\n" +
+                    "Minimum bet is 1 chip.\n\n" +
                     "Blackjack pays 3 to 2.\n" +
                     "Dealer hits on soft 17.";
             Label rulesLabel = new Label(text);
